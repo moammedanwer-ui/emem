@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>EMPIRE SPORT — Mobile Responsive Wash Guide</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary-teal: #083335;
+      --deep-black: #010A0B;
+      --pure-white: #FFFFFF;
+      --accent-gold: #E6C387;
+      --font-main: 'Cairo', system-ui, -apple-system, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body, html {
+      width: 100%;
+      height: 100%;
+      background-color: #000000;
+      font-family: var(--font-main);
+      color: var(--pure-white);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    /* 9:16 Fully Mobile Responsive Stage */
+    .mobile-stage {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      max-width: 430px;
+      max-height: 932px;
+      background: radial-gradient(circle at 50% 45%, #0d4648 0%, var(--primary-teal) 55%, var(--deep-black) 100%);
+      overflow: hidden;
+      box-shadow: 0 0 50px rgba(0, 0, 0, 0.9);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding: clamp(45px, 6vh, 60px) 16px clamp(15px, 2.5vh, 25px) 16px;
+    }
+
+    @media (min-width: 500px) and (min-height: 750px) {
+      .mobile-stage {
+        height: 92vh;
+        border-radius: 28px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+      }
+    }
+
+    /* Canvas Particles */
+    .bg-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* Texture Overlay */
+    .texture-overlay {
+      position: absolute;
+      inset: 0;
+      background-image: 
+        radial-gradient(circle at 50% 50%, transparent 35%, rgba(0,0,0,0.85) 100%),
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 100% 100%, 35px 35px, 35px 35px;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    /* Top Bar */
+    .top-bar {
+      position: absolute;
+      top: clamp(14px, 2vh, 22px);
+      left: 20px;
+      right: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 50;
+    }
+
+    .brand-mini-tag {
+      font-size: clamp(0.7rem, 1.8vw, 0.8rem);
+      font-weight: 900;
+      letter-spacing: 4px;
+      opacity: 0.9;
+    }
+
+    /* Header Section */
+    .guide-header {
+      z-index: 10;
+      opacity: 0;
+      transform: translateY(-12px);
+      transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      text-align: center;
+    }
+
+    .guide-header.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .guide-tag {
+      font-size: clamp(0.65rem, 1.6vw, 0.72rem);
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: var(--accent-gold);
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+
+    .guide-title {
+      font-size: clamp(1.2rem, 3.8vw, 1.45rem);
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+    }
+
+    /* Steps List Container */
+    .guide-steps-container {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: clamp(5px, 0.9vh, 8px);
+      margin: auto 0;
+    }
+
+    .guide-card {
+      position: relative;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: clamp(10px, 1.5vh, 14px);
+      padding: clamp(6px, 1vh, 9px) clamp(8px, 2vw, 12px);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+      display: flex;
+      align-items: center;
+      gap: clamp(8px, 2vw, 12px);
+      text-align: right;
+      opacity: 0;
+      transform: translateY(15px) scale(0.96);
+      transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .guide-card.show {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .guide-icon-box {
+      width: clamp(30px, 4.5vh, 36px);
+      height: clamp(30px, 4.5vh, 36px);
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: clamp(8px, 1.2vh, 10px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: clamp(1rem, 2.8vw, 1.15rem);
+      flex-shrink: 0;
+    }
+
+    .guide-card-title {
+      font-size: clamp(0.78rem, 2.2vw, 0.88rem);
+      font-weight: 900;
+      color: var(--pure-white);
+      margin-bottom: 1px;
+      line-height: 1.2;
+    }
+
+    .guide-card-desc {
+      font-size: clamp(0.65rem, 1.8vw, 0.72rem);
+      font-weight: 600;
+      opacity: 0.82;
+      line-height: 1.3;
+    }
+
+    /* Quality Footer Note */
+    .quality-note-box {
+      z-index: 10;
+      width: 100%;
+      background: rgba(230, 195, 135, 0.1);
+      border: 1px solid rgba(230, 195, 135, 0.3);
+      border-radius: 12px;
+      padding: clamp(8px, 1.2vh, 10px) 12px;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .quality-note-box.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .quality-note-text {
+      font-size: clamp(0.7rem, 2vw, 0.78rem);
+      font-weight: 700;
+      color: var(--accent-gold);
+      line-height: 1.35;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="mobile-stage">
+    
+    <!-- Background Canvas Particles -->
+    <canvas class="bg-canvas" id="bgCanvas"></canvas>
+    <div class="texture-overlay"></div>
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+      <div class="brand-mini-tag">EMPIRE SPORT</div>
+    </div>
+
+    <!-- Header -->
+    <div class="guide-header" id="guideHeader">
+      <div class="guide-tag">7 قواعد للعناية الفائقة</div>
+      <h1 class="guide-title">دليل الغسيل الصحيح للتيشرت</h1>
+    </div>
+
+    <!-- 7 Steps List -->
+    <div class="guide-steps-container">
+      
+      <!-- Tip 1 -->
+      <div class="guide-card" id="card1">
+        <div class="guide-icon-box">🔄</div>
+        <div>
+          <div class="guide-card-title">1. اغسل التيشرت مقلوباً</div>
+          <div class="guide-card-desc">اقلب التيشرت للداخل لحماية الشعار والطباعة من الاحتكاك.</div>
+        </div>
+      </div>
+
+      <!-- Tip 2 -->
+      <div class="guide-card" id="card2">
+        <div class="guide-icon-box">💧</div>
+        <div>
+          <div class="guide-card-title">2. استخدم ماءً بارداً</div>
+          <div class="guide-card-desc">اغسل بماء بارد (أقل من 30°C) للحفاظ على جودة اللاصق والألوان.</div>
+        </div>
+      </div>
+
+      <!-- Tip 3 -->
+      <div class="guide-card" id="card3">
+        <div class="guide-icon-box">🚫</div>
+        <div>
+          <div class="guide-card-title">3. تجنب المبيضات والكلور</div>
+          <div class="guide-card-desc">احرص على استخدام مسحوق ناعم بدون مواد مبيضة تضعف النسيج.</div>
+        </div>
+      </div>
+
+      <!-- Tip 4 -->
+      <div class="guide-card" id="card4">
+        <div class="guide-icon-box">🌬️</div>
+        <div>
+          <div class="guide-card-title">4. ابتعد عن المجفف الحراري</div>
+          <div class="guide-card-desc">الحرارة العالية تتلف الطباعة وشعارات الربل 3D البارزة.</div>
+        </div>
+      </div>
+
+      <!-- Tip 5 -->
+      <div class="guide-card" id="card5">
+        <div class="guide-icon-box">👕</div>
+        <div>
+          <div class="guide-card-title">5. لا تكوِ الشعار والطباعة مباشرة</div>
+          <div class="guide-card-desc">اكوِ من الداخل فقط مع عدم وضع المكواة المباشرة على الأرقام.</div>
+        </div>
+      </div>
+
+      <!-- Tip 6 -->
+      <div class="guide-card" id="card6">
+        <div class="guide-icon-box">🤲</div>
+        <div>
+          <div class="guide-card-title">6. تجنب العصر الشديد</div>
+          <div class="guide-card-desc">لا تعصر التيشرت بقوة حتى لا تتمدد الخياطة وتتأثر قصة Player Version.</div>
+        </div>
+      </div>
+
+      <!-- Tip 7 -->
+      <div class="guide-card" id="card7">
+        <div class="guide-icon-box">☀️</div>
+        <div>
+          <div class="guide-card-title">7. جفف في الظل</div>
+          <div class="guide-card-desc">تجنب تعريض التيشرت للشمس المباشرة لفترات طويلة لمنع تغير اللون.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer Note -->
+    <div class="quality-note-box" id="qualityNote">
+      <div class="quality-note-text">✨ تطبيق هذه القواعد الـ 7 يضمن بقاء تيشرتك بزهوته وجودة الملاعب دائماً!</div>
+    </div>
+
+  </div>
+
+  <script>
+    /* Canvas Particles Background */
+    const canvas = document.getElementById('bgCanvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    function resizeCanvas() {
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    class Particle {
+      constructor() {
+        this.reset();
+      }
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 1.8 + 0.3;
+        this.speedY = -(Math.random() * 0.4 + 0.1);
+        this.opacity = Math.random() * 0.5 + 0.1;
+      }
+      update() {
+        this.y += this.speedY;
+        if (this.y < 0) this.reset();
+      }
+      draw() {
+        ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    for (let i = 0; i < 45; i++) particles.push(new Particle());
+
+    function renderParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      requestAnimationFrame(renderParticles);
+    }
+    renderParticles();
+
+    /* Animation Timeline Controller */
+    let timers = [];
+
+    function addTimer(fn, delay) {
+      timers.push(setTimeout(fn, delay));
+    }
+
+    function startAnimation() {
+      timers.forEach(t => clearTimeout(t));
+      timers = [];
+
+      document.getElementById('guideHeader').classList.remove('show');
+      for(let i = 1; i <= 7; i++) {
+        document.getElementById(`card${i}`).classList.remove('show');
+      }
+      document.getElementById('qualityNote').classList.remove('show');
+
+      addTimer(() => document.getElementById('guideHeader').classList.add('show'), 200);
+      
+      let stepDelay = 600;
+      for(let i = 1; i <= 7; i++) {
+        addTimer(() => document.getElementById(`card${i}`).classList.add('show'), stepDelay);
+        stepDelay += 450;
+      }
+
+      addTimer(() => document.getElementById('qualityNote').classList.add('show'), stepDelay + 100);
+
+      // Automatic Loop for recording
+      addTimer(() => startAnimation(), stepDelay + 6000);
+    }
+
+    window.addEventListener('DOMContentLoaded', startAnimation);
+  </script>
+</body>
+</html>
